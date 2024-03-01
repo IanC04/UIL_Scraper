@@ -23,13 +23,13 @@ def brackets(level: str) -> list[str]:
 def get_yearly_data(year: int) -> tuple[int, list[list[str]]]:
     print(f"Parsing {year}")
     year_data = []
-    for conf in tqdm(range(1, 7)):
+    for conf in tqdm([f"{i}A" for i in range(1, 7)]):
         for level in ["District", "Region", "State"]:
             tiers = brackets(level)
             for nbr in tiers:
                 for event in EVENTS:
                     url = (f"https://utdirect.utexas.edu/nlogon/uil/vlcp_pub_arch.WBX?s_year={year}"
-                           f"&s_conference={conf}A"
+                           f"&s_conference={conf}"
                            f"&s_level_id={level[0]}&s_level_nbr={nbr}&s_event_abbr="
                            f"{event}&s_submit_sw=X&s_year=2024"
                            f"&s_conference=4A"
@@ -38,9 +38,9 @@ def get_yearly_data(year: int) -> tuple[int, list[list[str]]]:
                     soup = BeautifulSoup(r.content, 'html.parser')
                     table = soup.find('table')
                     if table is None:
-                        print(f"Skipping {year} {conf}A {level} {nbr} {event}")
+                        print(f"Skipping {year} {conf} {level} {nbr} {event}")
                     else:
-                        print(f"Parsing {year} {conf}A {level} {nbr} {event}")
+                        print(f"Parsing {year} {conf} {level} {nbr} {event}")
                         rows = table.find_all('tr')
                         # Skip header
                         rows = rows[1:]
@@ -61,7 +61,7 @@ def scrape_data() -> None:
         results = list(executor.map(get_yearly_data, range(2004, 2023)))
 
     for year, year_data in results:
-        with open(f'Data/{year}.csv', 'a') as f:
+        with open(f'Data/{year}.csv', 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             for data in year_data:
                 writer.writerow(data)
