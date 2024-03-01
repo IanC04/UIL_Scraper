@@ -69,5 +69,5 @@ def scrape_data() -> None:
 import sys
 
 if __name__ == "__main__":
-    if sys.argv[1] == "scrape":
+    if len(sys.argv) > 0 and sys.argv[1] == "scrape":
         scrape_data()
