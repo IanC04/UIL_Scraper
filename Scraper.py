@@ -66,6 +66,8 @@ def scrape_data() -> None:
             for data in year_data:
                 writer.writerow(data)
 
+import sys
 
 if __name__ == "__main__":
-    scrape_data()
+    if sys.argv[1] == "scrape":
+        scrape_data()
