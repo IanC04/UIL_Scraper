@@ -65,7 +65,6 @@ def get_yearly_data(year: int) -> tuple[int, list[list[str]], list[list[str]]]:
                                     ind_data.append(data)
                                 else:
                                     team_data.append(data)
-                    return year, ind_data, team_data
     return year, ind_data, team_data
 
 
